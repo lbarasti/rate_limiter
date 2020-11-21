@@ -1,3 +1,5 @@
+![Build Status](https://github.com/lbarasti/rate_limiter/workflows/Crystal%20spec/badge.svg)
+
 # rate_limiter
 
 TODO: Write a description here

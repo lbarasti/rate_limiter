@@ -1,36 +1,67 @@
-# Why do I need a rate limiter?
-# * We're calling an API that throttles us when we
-#   call too frequently
-# * we are exposing an API to customers and want to
-#   ensure we don't get flooded with requests
-# * Run ETL jobs with specified rate - e.g. query
-#   a datastore with a rate limit
-# * Run a database migration in production and we don't
-#   want to affect the responsiveness of the service
-#
-# Token bucket algorithm
-module Rate
+# Rate limiting functionality.
+module RateLimiter
+  # Creates a new `Limiter`.
+  # `rate`: the rate of tokens being produced in tokens/second.
+  # `max_burst`: maximum number of tokens that can be stored in the bucket.
+  def self.new(rate : Float64, max_burst : Int32 = 1)
+    Limiter.new(rate, max_burst)
+  end
+
+  # Creates a new `Limiter`.
+  # `interval`: the interval at which new tokens are generated.
+  # `max_burst`: maximum number of tokens that can be stored in the bucket.
+  def self.new(interval : Time::Span, max_burst : Int32 = 1)
+    rate = 1 / interval.total_seconds
+    Limiter.new(rate, max_burst)
+  end
+
+  # Creates a `MultiLimiter`.
+  # `limiters`: a set of rate limiters.
+  def self.new(*limiters : Limiter)
+    MultiLimiter.new(*limiters)
+  end
+
+  # Defines the API for a rate-limiter-like instance.
   module LimiterLike
+    # Returns a `Token` as soon as available. Blocking.
     abstract def get : Token
+
+    # Returns a `Token` if one is available within `max_wait` time,
+    # otherwise it returns a `Timeout`. Blocking.
     abstract def get(max_wait : Time::Span) : Token | Timeout
 
-    def get?
-      get(max_wait: 0.seconds)
+    # Returns `nil` if no token is available at call time. Non-blocking.
+    def get? : Token | Nil
+      case t = get(max_wait: 0.seconds)
+      in Token
+        t
+      in Timeout
+        nil
+      end
     end
 
-    def get!
-      case res = get(max_wait: 0.seconds)
-      when Token
+    # Raises `RateLimiter::Timeout` if no token is available after the given
+    # time span. Blocking for at most a `max_wait` duration.
+    def get!(max_wait : Time::Span) : Token
+      case res = get(max_wait: max_wait)
+      in Token
         res
-      when Timeout
+      in Timeout
         raise res
       end
     end
+
+    # Raises `RateLimiter::Timeout` if no token is available at call time. Non-blocking.
+    def get! : Token
+      get!(max_wait: 0.seconds)
+    end
   end
 
+  # Returned or raised whenever a `Token` is not available within a given time constraint.
   class Timeout < Exception
   end
 
+  # Represents the availability of capacity to perform operations in the current time bucket.
   class Token
     getter created_at : Time
 
@@ -38,6 +69,9 @@ module Rate
     end
   end
 
+  # A rate limiter erogating tokens at the specified rate.
+  # 
+  # This is powered by the token bucket algorithm.
   class Limiter
     include LimiterLike
     getter rate, bucket
@@ -74,6 +108,10 @@ module Rate
     end
   end
 
+  # A rate limiter combining multiple `Limiter`s.
+  # 
+  # A MultiLimter tries to acquire tokens from limiters producing at the lowest rate first.
+  # This mitigates the scenario where tokens are acquired and then wasted due to a single rate limiter timing out. 
   class MultiLimiter
     include LimiterLike
 
@@ -89,47 +127,19 @@ module Rate
     end
 
     def get(max_wait : Time::Span) : Token | Timeout
-      @rate_limiters.map { |rl|
-        Channel(Token | Timeout).new(1).tap { |ch|
-          spawn { ch.send rl.get(max_wait) }
+      _, remainder = @rate_limiters
+        .map(&.bucket)
+        .reduce({Time.utc, max_wait}) { |(started_at, time_left), bucket|
+          select
+          when bucket.receive
+            new_started_at = Time.utc
+            elapsed = new_started_at - started_at
+            {new_started_at, time_left - elapsed}
+          when timeout(time_left)
+            break {nil, nil}
+          end
         }
-      }.reduce(Token.new) { |_, ch|
-        case t = ch.receive
-        in Timeout
-          break t
-        in Token
-          t
-        end
-      }
-
-      # _, remainder = @rate_limiters.map(&.bucket).reduce({Time.utc, max_wait}) { |(now, time_left), bucket|
-      #   select
-      #   when bucket.receive
-      #     new_now = Time.utc
-      #     elapsed = new_now - now
-      #     {new_now, time_left - elapsed}
-      #   when timeout(time_left)
-      #     break {nil, nil}
-      #   end
-      # }
-      # remainder.nil? ? Timeout.new : Token.new
+      remainder.nil? ? Timeout.new : Token.new
     end
-  end
-end
-
-
-# API
-rl_1 = Rate::Limiter.new(rate: 10/60, max_burst: 6)
-rl_2 = Rate::Limiter.new(rate: 2, max_burst: 2)
-ml = Rate::MultiLimiter.new(rl_1, rl_2)
-
-sleep 2.5
-puts "#{Time.utc}: calls start now"
-loop do
-  case ml.get(1.second)
-  when Rate::Token
-    puts "#{Time.utc}: calling API"
-  else
-    puts "#{Time.utc}: timed out"
   end
 end

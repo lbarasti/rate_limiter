@@ -2,20 +2,20 @@ require "./spec_helper"
 
 describe RateLimiter do
   describe "RateLimiter.new" do
-    it "initializes a Limiter with a rate", do
+    it "initializes a Limiter with a rate" do
       RateLimiter.new(rate: 0.33)
     end
 
-    it "initializes a Limiter with an interval", do
+    it "initializes a Limiter with an interval" do
       RateLimiter.new(interval: 0.5.seconds)
     end
 
-    it "initializes a Limiter with max burst parameter", do
+    it "initializes a Limiter with max burst parameter" do
       RateLimiter.new(interval: 0.5.minutes, max_burst: 2)
       RateLimiter.new(rate: 0.5, max_burst: 5)
     end
 
-    it "initializes a MultiLimiter combining the given Limiters", do
+    it "initializes a MultiLimiter combining the given Limiters" do
       rl_1 = RateLimiter.new(interval: 0.5.seconds)
       rl_2 = RateLimiter.new(rate: 0.5)
       multi = RateLimiter.new(rl_1, rl_2)
@@ -116,7 +116,7 @@ describe RateLimiter do
     api_interval = 1.second
     db_interval = 0.1.seconds
     
-    it "combines 2 or more rate limiters", do
+    it "combines 2 or more rate limiters" do
       api_limiter = RateLimiter.new(interval: api_interval, max_burst: api_burst)
       db_limiter = RateLimiter.new(interval: db_interval, max_burst: db_burst)
       multi = RateLimiter.new(api_limiter, db_limiter)

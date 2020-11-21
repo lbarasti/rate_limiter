@@ -4,19 +4,19 @@
 
 # rate_limiter
 
-This shard provides a Crystal implementation of the [token bucket](https://en.wikipedia.org/wiki/Token_bucket) algorithm for rate limiting.
+This shard provides a Crystal implementation of the [token bucket](https://en.wikipedia.org/wiki/Token_bucket) algorithm for rate limiting. You can check out the API documentation [here](https://lbarasti.com/rate_limiter/).
 
 ## Installation
 
-1. Add the dependency to your `shard.yml`:
+1 - Add the dependency to your `shard.yml`:
 
-   ```yaml
-   dependencies:
-     rate_limiter:
-       github: lbarasti/rate_limiter
-   ```
+```yaml
+dependencies:
+  rate_limiter:
+    github: lbarasti/rate_limiter
+```
 
-2. Run `shards install`
+2 - Run `shards install`
 
 ## Usage
 
@@ -67,6 +67,9 @@ You can define a rate limiter that accumulates unused tokens up to the specified
 RateLimiter.new(rate: 0.5, max_burst: 10)
 ```
 This will generate 1 token every 2 seconds and store up to 10 unused tokens for later use. See Wikipedia's [Burst size](https://en.wikipedia.org/wiki/Token_bucket#Burst_size) for more details.
+
+## Under the hood
+![](./media/diagram_1.png)
 
 ## Why do I need a rate limiter?
 * We're calling an API that throttles us when we

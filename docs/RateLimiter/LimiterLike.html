@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.34.0">
+<meta name="crystal_docs.project_version" content="main-dev">
+<meta name="crystal_docs.project_name" content="rate_limiter">
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/doc.js"></script>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+
+  <meta id="repository-name" content="rate_limiter">
+  <title>RateLimiter::LimiterLike - rate_limiter main-dev</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../";
+  </script>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../index.html">
+          rate_limiter
+        </a>
+      </h1>
+
+      <span class="project-version">
+        main-dev
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="rate_limiter/RateLimiter" data-name="ratelimiter">
+      <a href="../RateLimiter.html">RateLimiter</a>
+      
+        <ul>
+  
+  <li class=" " data-id="rate_limiter/RateLimiter/Limiter" data-name="ratelimiter::limiter">
+      <a href="../RateLimiter/Limiter.html">Limiter</a>
+      
+    </li>
+  
+  <li class=" current" data-id="rate_limiter/RateLimiter/LimiterLike" data-name="ratelimiter::limiterlike">
+      <a href="../RateLimiter/LimiterLike.html">LimiterLike</a>
+      
+    </li>
+  
+  <li class=" " data-id="rate_limiter/RateLimiter/MultiLimiter" data-name="ratelimiter::multilimiter">
+      <a href="../RateLimiter/MultiLimiter.html">MultiLimiter</a>
+      
+    </li>
+  
+  <li class=" " data-id="rate_limiter/RateLimiter/Timeout" data-name="ratelimiter::timeout">
+      <a href="../RateLimiter/Timeout.html">Timeout</a>
+      
+    </li>
+  
+  <li class=" " data-id="rate_limiter/RateLimiter/Token" data-name="ratelimiter::token">
+      <a href="../RateLimiter/Token.html">Token</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">module</span> RateLimiter::LimiterLike
+
+</h1>
+
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>Defines the API for a rate-limiter-like instance.</p>
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="direct-including-types" class="anchor" href="#direct-including-types">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Direct including types
+  </h2>
+  <ul class="other-types-list">
+    
+      <li class="other-type"><a href="../RateLimiter/Limiter.html">RateLimiter::Limiter</a></li>
+    
+      <li class="other-type"><a href="../RateLimiter/MultiLimiter.html">RateLimiter::MultiLimiter</a></li>
+    
+  </ul>
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#get(max_wait:Time::Span):Token%7CTimeout-instance-method" class="signature"><strong>#get</strong>(max_wait : Time::Span) : Token | Timeout</a>
+        
+          <div class="summary"><p>Returns a <code><a href="../RateLimiter/Token.html">Token</a></code> if one is available within <code>max_wait</code> time, otherwise it returns a <code><a href="../RateLimiter/Timeout.html">Timeout</a></code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#get:Token-instance-method" class="signature"><strong>#get</strong> : Token</a>
+        
+          <div class="summary"><p>Returns a <code><a href="../RateLimiter/Token.html">Token</a></code> as soon as available.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#get!(max_wait:Time::Span):Token-instance-method" class="signature"><strong>#get!</strong>(max_wait : Time::Span) : Token</a>
+        
+          <div class="summary"><p>Raises <code><a href="../RateLimiter/Timeout.html">RateLimiter::Timeout</a></code> if no token is available after the given time span.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#get!:Token-instance-method" class="signature"><strong>#get!</strong> : Token</a>
+        
+          <div class="summary"><p>Raises <code><a href="../RateLimiter/Timeout.html">RateLimiter::Timeout</a></code> if no token is available at call time.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#get?:Token?-instance-method" class="signature"><strong>#get?</strong> : Token?</a>
+        
+          <div class="summary"><p>Returns <code>nil</code> if no token is available at call time.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+</div>
+
+
+
+
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="get(max_wait:Time::Span):Token|Timeout-instance-method">
+      <div class="signature">
+        abstract 
+        def <strong>get</strong>(max_wait : Time::Span) : <a href="../RateLimiter/Token.html">Token</a> | <a href="../RateLimiter/Timeout.html">Timeout</a>
+
+        <a class="method-permalink" href="#get(max_wait:Time::Span):Token%7CTimeout-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns a <code><a href="../RateLimiter/Token.html">Token</a></code> if one is available within <code>max_wait</code> time,
+otherwise it returns a <code><a href="../RateLimiter/Timeout.html">Timeout</a></code>. Blocking.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="get:Token-instance-method">
+      <div class="signature">
+        abstract 
+        def <strong>get</strong> : <a href="../RateLimiter/Token.html">Token</a>
+
+        <a class="method-permalink" href="#get:Token-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns a <code><a href="../RateLimiter/Token.html">Token</a></code> as soon as available. Blocking.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="get!(max_wait:Time::Span):Token-instance-method">
+      <div class="signature">
+        
+        def <strong>get!</strong>(max_wait : Time::Span) : <a href="../RateLimiter/Token.html">Token</a>
+
+        <a class="method-permalink" href="#get!(max_wait:Time::Span):Token-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Raises <code><a href="../RateLimiter/Timeout.html">RateLimiter::Timeout</a></code> if no token is available after the given
+time span. Blocking for at most a <code>max_wait</code> duration.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="get!:Token-instance-method">
+      <div class="signature">
+        
+        def <strong>get!</strong> : <a href="../RateLimiter/Token.html">Token</a>
+
+        <a class="method-permalink" href="#get!:Token-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Raises <code><a href="../RateLimiter/Timeout.html">RateLimiter::Timeout</a></code> if no token is available at call time. Non-blocking.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="get?:Token?-instance-method">
+      <div class="signature">
+        
+        def <strong>get?</strong> : <a href="../RateLimiter/Token.html">Token</a>?
+
+        <a class="method-permalink" href="#get?:Token?-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns <code>nil</code> if no token is available at call time. Non-blocking.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>

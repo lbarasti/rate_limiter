@@ -32,7 +32,7 @@ rl = RateLimiter.new(interval: 3.seconds)
 
 Mind that the first call to `#get` will return immediately, as buckets are initialised with 1 token, by default.
 ```crystal
-rl.get # => #<RateLimiter::Token:0x7f9c55458f00 @created_at=...>
+rl.get # => RateLimiter::Token(2020-11-29 20:36:56 UTC)
 ```
 
 The next call to `#get` will block for approx. 3 seconds
@@ -68,8 +68,27 @@ RateLimiter.new(rate: 0.5, max_burst: 10)
 ```
 This will generate 1 token every 2 seconds and store up to 10 unused tokens for later use. See Wikipedia's [Burst size](https://en.wikipedia.org/wiki/Token_bucket#Burst_size) for more details.
 
+### Multi-limiters
+In the scenario where a part of your code needs to abide to two or more rate limits, you can combine multiple rate limiters into a `MultiLimiter`.
+
+```crystal
+api_limiter = RateLimiter.new(rate: 10, max_burst: 60)
+db_limiter = RateLimiter.new(rate: 100)
+multi = RateLimiter::MultiLimiter.new(api_limiter, db_limiter)
+```
+
+You can also use the convenience constructor on the `RateLimiter` module.
+
+```crystal
+multi = RateLimiter.new(api_limiter, db_limiter)
+```
+
+A `MultiLimiter` exposes the same API as a regular `Limiter` - they both include the `LimiterLike` module - so you can call the same flavours of `#get` methods on it.
+
+When calling `get` on a `MultiLimiter`, it will try to acquire tokens from each one of the underlying rate limiters, and only return a token then.
+
 ## Under the hood
-![](./media/diagram_1.png)
+![A rate limiter produces one token in each interval. If the bucket has no more room available, then no token will be added for the interval.](./media/diagram_1.png)
 
 ## Why do I need a rate limiter?
 * We're calling an API that throttles us when we

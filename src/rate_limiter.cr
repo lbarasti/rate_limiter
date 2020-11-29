@@ -68,6 +68,13 @@ module RateLimiter
 
     def initialize(@created_at = Time.utc)
     end
+
+
+    def to_s(io)
+      io << "#{ {{ @type }} }("
+      @created_at.to_s(io)
+      io << ")"
+    end
   end
 
   # A rate limiter erogating tokens at the specified rate.

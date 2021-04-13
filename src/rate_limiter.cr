@@ -1,6 +1,6 @@
 # Rate limiting functionality.
 module RateLimiter
-  VERSION = "1.0.0"
+  VERSION = "1.0.1"
   # Creates a new `Limiter`.
   # `rate`: the rate of tokens being produced in tokens/second.
   # `max_burst`: maximum number of tokens that can be stored in the bucket.

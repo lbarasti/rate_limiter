@@ -1,6 +1,7 @@
 ![GitHub release](https://img.shields.io/github/release/lbarasti/rate_limiter.svg)
 ![Build Status](https://github.com/lbarasti/rate_limiter/workflows/Crystal%20spec/badge.svg)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://lbarasti.github.io/rate_limiter)
 
 # rate_limiter
 

@@ -1,9 +1,11 @@
 name: rate_limiter
-version: 1.0.0
+version: 1.0.1
+
+description: "A Crystal implementation of the token bucket algorithm for rate limiting"
 
 authors:
   - lbarasti <lbarasti@users.noreply.github.com>
 
-crystal: 0.35.1
+crystal: ">= 0.35.1"
 
 license: MIT

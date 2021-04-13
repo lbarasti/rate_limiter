@@ -3,21 +3,16 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.34.0">
+<meta name="generator" content="Crystal Docs 0.36.1">
 <meta name="crystal_docs.project_version" content="main-dev">
 <meta name="crystal_docs.project_name" content="rate_limiter">
+
 
 
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/doc.js"></script>
 
-<svg class="hidden">
-  <symbol id="octicon-link" viewBox="0 0 16 16">
-    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
-  </symbol>
-</svg>
-
-  <meta id="repository-name" content="rate_limiter">
+  <meta name="repository-name" content="rate_limiter">
   <title>rate_limiter main-dev</title>
   <script type="text/javascript">
   CrystalDocs.base_path = "";
@@ -25,6 +20,11 @@
 </head>
 <body>
 
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
 <div class="sidebar">
   <div class="sidebar-header">
     <div class="search-box">
@@ -44,7 +44,7 @@
     </div>
   </div>
 
-  <div class="search-results" class="hidden">
+  <div class="search-results hidden">
     <ul class="search-list"></ul>
   </div>
 
@@ -95,7 +95,8 @@
 <div class="main-content">
 <p><img src="https://img.shields.io/github/release/lbarasti/rate_limiter.svg" alt="GitHub release"/>
 <img src="https://github.com/lbarasti/rate_limiter/workflows/Crystal%20spec/badge.svg" alt="Build Status"/>
-<a href="https://opensource.org/licenses/MIT" target="_blank"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"/></a></p>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"/></a>
+<a href="https://lbarasti.github.io/rate_limiter/docs"><img src="https://img.shields.io/badge/docs-available-brightgreen.svg" alt="Docs"/></a></p>
 
 <h1><a id="rate-limiter" class="anchor" href="#rate-limiter">
   <svg class="octicon-link" aria-hidden="true">
@@ -103,7 +104,7 @@
   </svg>
 </a>rate_limiter</h1>
 
-<p>This shard provides a Crystal implementation of the <a href="https://en.wikipedia.org/wiki/Token_bucket" target="_blank">token bucket</a> algorithm for rate limiting. You can check out the API documentation <a href="https://lbarasti.com/rate_limiter/" target="_blank">here</a>.</p>
+<p>This shard provides a Crystal implementation of the <a href="https://en.wikipedia.org/wiki/Token_bucket">token bucket</a> algorithm for rate limiting. You can check out the API documentation <a href="https://lbarasti.com/rate_limiter/">here</a>.</p>
 
 <h2><a id="installation" class="anchor" href="#installation">
   <svg class="octicon-link" aria-hidden="true">
@@ -135,7 +136,7 @@
 
 <p>Mind that the first call to <code>#get</code> will return immediately, as buckets are initialised with 1 token, by default.</p>
 
-<pre><code class="language-crystal">rl.get <span class="c"># =&gt; #&lt;RateLimiter::Token:0x7f9c55458f00 @created_at=...&gt;</span></code></pre>
+<pre><code class="language-crystal">rl.get <span class="c"># =&gt; RateLimiter::Token(2020-11-29 20:36:56 UTC)</span></code></pre>
 
 <p>The next call to <code>#get</code> will block for approx. 3 seconds</p>
 
@@ -171,7 +172,27 @@ rl.get! <span class="c"># raises a RateLimiter::Timeout exception if no token is
 
 <pre><code class="language-crystal"><span class="t">RateLimiter</span>.<span class="k">new</span>(rate: <span class="n">0.5</span>, max_burst: <span class="n">10</span>)</code></pre>
 
-<p>This will generate 1 token every 2 seconds and store up to 10 unused tokens for later use. See Wikipedia's <a href="https://en.wikipedia.org/wiki/Token_bucket#Burst_size" target="_blank">Burst size</a> for more details.</p>
+<p>This will generate 1 token every 2 seconds and store up to 10 unused tokens for later use. See Wikipedia's <a href="https://en.wikipedia.org/wiki/Token_bucket#Burst_size">Burst size</a> for more details.</p>
+
+<h3><a id="multi-limiters" class="anchor" href="#multi-limiters">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Multi-limiters</h3>
+
+<p>In the scenario where a part of your code needs to abide to two or more rate limits, you can combine multiple rate limiters into a <code>MultiLimiter</code>.</p>
+
+<pre><code class="language-crystal">api_limiter <span class="o">=</span> <span class="t">RateLimiter</span>.<span class="k">new</span>(rate: <span class="n">10</span>, max_burst: <span class="n">60</span>)
+db_limiter <span class="o">=</span> <span class="t">RateLimiter</span>.<span class="k">new</span>(rate: <span class="n">100</span>)
+multi <span class="o">=</span> <span class="t">RateLimiter</span><span class="t">::</span><span class="t">MultiLimiter</span>.<span class="k">new</span>(api_limiter, db_limiter)</code></pre>
+
+<p>You can also use the convenience constructor on the <code><a href="RateLimiter.html">RateLimiter</a></code> module.</p>
+
+<pre><code class="language-crystal">multi <span class="o">=</span> <span class="t">RateLimiter</span>.<span class="k">new</span>(api_limiter, db_limiter)</code></pre>
+
+<p>A <code>MultiLimiter</code> exposes the same API as a regular <code>Limiter</code> - they both include the <code>LimiterLike</code> module - so you can call the same flavours of <code>#get</code> methods on it.</p>
+
+<p>When calling <code>get</code> on a <code>MultiLimiter</code>, it will try to acquire tokens from each one of the underlying rate limiters, and only return a token then.</p>
 
 <h2><a id="under-the-hood" class="anchor" href="#under-the-hood">
   <svg class="octicon-link" aria-hidden="true">
@@ -179,7 +200,7 @@ rl.get! <span class="c"># raises a RateLimiter::Timeout exception if no token is
   </svg>
 </a>Under the hood</h2>
 
-<p><img src="./media/diagram_1.png" alt=""/></p>
+<p><img src="./media/diagram_1.png" alt="A rate limiter produces one token in each interval. If the bucket has no more room available, then no token will be added for the interval."/></p>
 
 <h2><a id="why-do-i-need-a-rate-limiter" class="anchor" href="#why-do-i-need-a-rate-limiter">
   <svg class="octicon-link" aria-hidden="true">
@@ -200,7 +221,7 @@ rl.get! <span class="c"># raises a RateLimiter::Timeout exception if no token is
 
 <p>Run the following to run the tests.</p>
 
-<pre><code>crystal spec</code></pre>
+<pre><code class="language-crystal">crystal spec</code></pre>
 
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">
@@ -216,7 +237,7 @@ rl.get! <span class="c"># raises a RateLimiter::Timeout exception if no token is
   </svg>
 </a>Contributors</h2>
 
-<ul><li><a href="https://github.com/lbarasti" target="_blank">lbarasti</a> - creator and maintainer</li></ul>
+<ul><li><a href="https://github.com/lbarasti">lbarasti</a> - creator and maintainer</li></ul>
 </div>
 </body>
 </html>
